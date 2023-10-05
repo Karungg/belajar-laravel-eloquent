@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Comment;
 use App\Models\Voucher;
+use Database\Seeders\VoucherSeeder;
 use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -36,5 +37,30 @@ class VoucherTest extends TestCase
 
         self::assertNotNull($voucher->id);
         self::assertNotNull($voucher->voucher_code);
+    }
+
+    public function testSoftDelete()
+    {
+        $this->seed(VoucherSeeder::class);
+
+        $voucher = Voucher::query()->where('name', 'Sample Voucher')->first();
+        $voucher->delete();
+
+        $voucher = Voucher::query()->where('name', 'Sample Voucher')->first();
+        self::assertNull($voucher);
+    }
+
+    public function testQueryWithTrashed()
+    {
+        $this->seed(VoucherSeeder::class);
+
+        $voucher = Voucher::query()->where('name', 'Sample Voucher')->first();
+        $voucher->delete();
+
+        $voucher = Voucher::query()->where('name', 'Sample Voucher')->first();
+        self::assertNull($voucher);
+
+        $voucher = Voucher::withTrashed()->where('name', 'Sample Voucher')->first();
+        self::assertNotNull($voucher);
     }
 }
