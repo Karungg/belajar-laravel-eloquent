@@ -43,4 +43,9 @@ class Comment extends Model
      * @var bool
      */
     public $timestamps = true; // defaultnya adalah true
+
+    protected $attributes = [
+        'title' => 'Sample Title',
+        'comment' => 'Sample Comment'
+    ];
 }
