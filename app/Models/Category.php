@@ -14,4 +14,15 @@ class Category extends Model
     protected $keyType = "string";
     public $incrementing = false;
     public $timestamps = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id',
+        'name',
+        'description'
+    ];
 }
