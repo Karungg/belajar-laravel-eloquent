@@ -37,28 +37,4 @@ class VoucherTest extends TestCase
         self::assertNotNull($voucher->id);
         self::assertNotNull($voucher->voucher_code);
     }
-
-    public function testCreateComment()
-    {
-        $comment = new Comment();
-        $comment->email = "miftahfadilah71@gmail.com";
-        $comment->title = "Sample Title";
-        $comment->comment = "Sample Comment";
-        $comment->created_at = new \DateTime();
-        $comment->updated_at = new \DateTime();
-        $comment->save();
-
-        self::assertNotNull($comment->id);
-    }
-
-    public function testDefaultAttributeValues()
-    {
-        $comment = new Comment();
-        $comment->email = "miftahfadilah71@gmail.com";
-        $comment->created_at = new \DateTime();
-        $comment->updated_at = new \DateTime();
-        $comment->save();
-
-        self::assertNotNull($comment->id);
-    }
 }
