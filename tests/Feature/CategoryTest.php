@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Scopes\IsActiveScope;
 use Database\Seeders\CategorySeeder;
+use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Log;
@@ -29,7 +30,8 @@ class CategoryTest extends TestCase
         for ($i = 0; $i < 10; $i++) {
             $categories[] = [
                 "id" => "ID $i",
-                "name" => "Name $i"
+                "name" => "Name $i",
+                "is_active" => true
             ];
         }
 
@@ -68,6 +70,7 @@ class CategoryTest extends TestCase
             $category = new Category();
             $category->id = "$i";
             $category->name = "Category $i";
+            $category->is_active = true;
             $category->save();
         }
 
@@ -85,7 +88,8 @@ class CategoryTest extends TestCase
         for ($i = 0; $i < 10; $i++) {
             $categories[] = [
                 "id" => "$i",
-                "name" => "Category $i"
+                "name" => "Category $i",
+                "is_active" => true
             ];
         }
 
@@ -118,7 +122,8 @@ class CategoryTest extends TestCase
         for ($i = 0; $i < 10; $i++) {
             $categories[] = [
                 "id" => "$i",
-                "name" => "Category $i"
+                "name" => "Category $i",
+                "is_active" => true
             ];
         }
 
@@ -191,5 +196,18 @@ class CategoryTest extends TestCase
 
         $category = Category::withoutGlobalScopes([IsActiveScope::class])->find("FOOD");
         self::assertNotNull($category);
+    }
+
+    public function testOneToMany()
+    {
+        $this->seed([CategorySeeder::class, ProductSeeder::class]);
+
+        $category = Category::find("FOOD");
+        self::assertNotNull($category);
+
+        $products = $category->products;
+
+        self::assertNotNull($products);
+        self::assertCount(1, $products);
     }
 }
