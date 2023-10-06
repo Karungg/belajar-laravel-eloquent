@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->boolean("is_active")->nullable()->default(true);
+        Schema::create('customers', function (Blueprint $table) {
+            $table->string("id", 100)->nullable(false)->primary();
+            $table->string("name", 100)->nullable(false);
+            $table->string("email", 100)->nullable(false)->unique("customer_email");
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropColumn("is_active");
-        });
+        Schema::dropIfExists('customers');
     }
 };
