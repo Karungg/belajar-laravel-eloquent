@@ -9,6 +9,7 @@ use App\Models\Wallet;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\CustomerSeeder;
 use Database\Seeders\ProductSeeder;
+use Database\Seeders\VirtualAccountSeeder;
 use Database\Seeders\WalletSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -81,5 +82,17 @@ class CustomerTest extends TestCase
 
         $outOfStockProducts = $category->products()->where('stock', '<=', '0')->get();
         self::assertCount(2, $outOfStockProducts);
+    }
+
+    public function testHasOneThrough()
+    {
+        $this->seed([CustomerSeeder::class, WalletSeeder::class, VirtualAccountSeeder::class]);
+
+        $customer = Customer::find("MIFTAH");
+        self::assertNotNull($customer);
+
+        $virtualAccount = $customer->virtualAccount;
+        self::assertNotNull($virtualAccount);
+        self::assertEquals("BCA", $virtualAccount->bank);
     }
 }

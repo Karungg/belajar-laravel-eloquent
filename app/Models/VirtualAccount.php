@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Wallet extends Model
+class VirtualAccount extends Model
 {
     use HasFactory;
 
@@ -16,7 +15,7 @@ class Wallet extends Model
      *
      * @var string
      */
-    protected $table = 'wallets';
+    protected $table = 'virtual_accounts';
 
     /**
      * The primary key associated with the table.
@@ -30,14 +29,14 @@ class Wallet extends Model
      *
      * @var string
      */
-    protected $keyType = 'string';
+    protected $keyType = 'int';
 
     /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = false;
+    public $incrementing = true;
 
     /**
      * Indicates if the model should be timestamped.
@@ -46,13 +45,8 @@ class Wallet extends Model
      */
     public $timestamps = false;
 
-    public function customer(): BelongsTo
+    public function wallet(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, "customer_id", "id");
-    }
-
-    public function virtualAccount(): HasOne
-    {
-        return $this->hasOne(VirtualAccount::class, "wallet_id", "id");
+        return $this->belongsTo(Wallet::class, "wallet_id", "id");
     }
 }
