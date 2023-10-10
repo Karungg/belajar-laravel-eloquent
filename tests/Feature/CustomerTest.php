@@ -95,4 +95,40 @@ class CustomerTest extends TestCase
         self::assertNotNull($virtualAccount);
         self::assertEquals("BCA", $virtualAccount->bank);
     }
+
+    public function testManyToMany()
+    {
+        $this->seed([CustomerSeeder::class, CategorySeeder::class, ProductSeeder::class]);
+
+        $customer = Customer::query()->find("MIFTAH");
+        $customer->likeProducts()->attach("1"); // Attach productId
+
+        self::assertNotNull($customer);
+    }
+
+    public function testQueryManyToMany()
+    {
+        $this->testManyToMany();
+
+        $customer = Customer::find("MIFTAH");
+        $products = $customer->likeProducts;
+
+        self::assertNotNull($products);
+        self::assertCount(1, $products);
+        self::assertEquals("1", $products[0]->id);
+        self::assertEquals("Product 1", $products[0]->name);
+    }
+
+    public function testRemoveManyToMany()
+    {
+        $this->testManyToMany();
+
+        $customer = Customer::query()->find("MIFTAH");
+        $products = $customer->likeProducts()->detach("1"); // detach productId
+
+        $products = $customer->likeProducts;
+
+        self::assertNotNull($products);
+        self::assertCount(0, $products);
+    }
 }

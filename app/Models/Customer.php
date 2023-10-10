@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
@@ -67,5 +68,10 @@ class Customer extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, "customer_id", "id");
+    }
+
+    public function likeProducts(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, "customers_likes_products", "customer_id", "product_id");
     }
 }
