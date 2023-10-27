@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('customers_likes_products', function (Blueprint $table) {
             $table->string("customer_id", 100)->nullable(false);
             $table->string("product_id", 100)->nullable(false);
+            $table->timestamp("updated_at");
             $table->primary(["customer_id", "product_id"]);
         });
     }
