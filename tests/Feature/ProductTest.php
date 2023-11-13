@@ -97,4 +97,15 @@ class ProductTest extends TestCase
             self::assertNotNull($tag->name);
         }
     }
+
+    public function testEloquentCollection()
+    {
+        $this->seed([CategorySeeder::class, ProductSeeder::class]);
+
+        $products = Product::query()->get();
+        self::assertCount(2, $products);
+
+        $products = $products->toQuery()->where('price', "=", 100)->get();
+        self::assertCount(1, $products);
+    }
 }
