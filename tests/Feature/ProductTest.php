@@ -67,4 +67,17 @@ class ProductTest extends TestCase
             self::assertEquals($product->id, $comment->commentable_id);
         }
     }
+
+    public function testHasOneOfManyPolymorhpic()
+    {
+        $this->seed([CategorySeeder::class, ProductSeeder::class, VoucherSeeder::class, CommentSeeder::class]);
+
+        $product = Product::query()->first();
+        $latestComment = $product->latestComment;
+
+        self::assertNotNull($latestComment);
+
+        $oldestComment = $product->oldestComment;
+        self::assertNotNull($oldestComment);
+    }
 }
