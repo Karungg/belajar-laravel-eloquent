@@ -21,5 +21,7 @@ abstract class TestCase extends BaseTestCase
         DB::delete("delete from wallets");
         DB::delete("delete from customers");
         DB::delete("delete from customers_likes_products");
+        DB::delete("delete from tags");
+        DB::delete("delete from taggables");
     }
 }
