@@ -50,6 +50,8 @@ class Customer extends Model
      */
     public $timestamps = false;
 
+    protected $with = ["wallet"];
+
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class, "customer_id", "id");
