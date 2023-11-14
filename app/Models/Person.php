@@ -45,6 +45,16 @@ class Person extends Model
      */
     public $timestamps = true;
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
     public function fullName(): Attribute
     {
         return Attribute::make(
