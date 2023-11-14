@@ -30,6 +30,15 @@ class Category extends Model
         'description'
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime:U',
+    ];
+
     protected static function booted()
     {
         parent::boot();

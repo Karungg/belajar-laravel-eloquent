@@ -12,6 +12,7 @@ use Database\Seeders\TagSeeder;
 use Database\Seeders\VoucherSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -107,5 +108,29 @@ class ProductTest extends TestCase
 
         $products = $products->toQuery()->where('price', "=", 100)->get();
         self::assertCount(1, $products);
+    }
+
+    public function testSerialization()
+    {
+        $this->seed([CategorySeeder::class, ProductSeeder::class]);
+
+        $products = Product::query()->get();
+        self::assertCount(2, $products);
+
+        $json = $products->toJson(JSON_PRETTY_PRINT);
+        Log::info($json);
+    }
+
+    public function testSerializationRelation()
+    {
+        $this->seed([CategorySeeder::class, ProductSeeder::class]);
+
+        $products = Product::query()->get();
+        $products->load("category");
+
+        self::assertCount(2, $products);
+
+        $json = $products->toJson(JSON_PRETTY_PRINT);
+        Log::info($json);
     }
 }
